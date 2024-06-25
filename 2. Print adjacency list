@@ -1,0 +1,16 @@
+
+from typing import List
+
+
+class Solution:
+    def printGraph(self, V : int, edges : List[List[int]]) -> List[List[int]]:
+        # code here
+        adj = [[] for i in range(V)]
+        
+        #print(adj)
+        for i in edges:
+            u,v = i[0],i[1]
+            adj[u].append(v)
+            adj[v].append(u)
+        
+        return adj

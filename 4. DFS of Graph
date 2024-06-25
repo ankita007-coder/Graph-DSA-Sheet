@@ -1,0 +1,23 @@
+#User function Template for python3
+
+class Solution:
+    
+    #Function to return a list containing the DFS traversal of the graph.
+    def dfsOfGraph(self, V, adj):
+        # code here
+        visited=[False]*V
+        arr = []
+        def dfs(node):
+            visited[node]=True
+            arr.append(node)
+        
+            for i in adj[node]:
+                if not visited[i]:
+                    dfs(i)
+        dfs(0)
+        return arr
+            
+            
+            
+            
+            

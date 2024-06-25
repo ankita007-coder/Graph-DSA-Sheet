@@ -1,0 +1,29 @@
+class Solution(object):
+    def findCircleNum(self, isConnected):
+        """
+        :type isConnected: List[List[int]]
+        :rtype: int
+        """
+        adjlist=[[] for i in range(len(isConnected))]
+        for i in range(len(isConnected)):
+            for j in range(len(isConnected[i])):
+                if isConnected[i][j]==1 and i!=j:
+                    adjlist[i].append(j)
+                    adjlist[j].append(i)
+        visited = [False]*len(isConnected)
+
+        count=0
+        for i in range(len(isConnected)):
+            if not visited[i]:
+                count+=1
+                self.dfs(i,adjlist,visited)
+
+        return count
+    
+    def dfs(self,node,adjlist,visited):
+
+        visited[node]=True
+        
+        for i in adjlist[node]:
+            if not visited[i]:
+                self.dfs(i,adjlist,visited)

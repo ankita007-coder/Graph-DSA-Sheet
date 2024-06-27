@@ -1,0 +1,55 @@
+from collections import deque
+class Solution:
+	def floodFill(self, image, sr, sc, newColor):
+		#Code here
+		n = len(image)
+		m = len(image[0])
+		rows = [1,0,-1,0]
+		cols = [0,1,0,-1]
+		ans = image
+		
+		self.dfs(image,sr,sc,newColor,rows,cols,ans,image[sr][sc])
+		return ans
+		
+		
+		
+	
+	def dfs(self,image,sr,sc,newColor,rows,cols,ans,iniColor):
+	    ans[sr][sc]=newColor
+	    n = len(image)
+		m = len(image[0])
+	    for i in range(4):
+	        row = sr+rows[i]
+	        col = sc+cols[i]
+	        if row>=0 and row<n and col>=0 and col<m and image[row][col]==iniColor and ans[row][col]!=newColor:
+	            self.dfs(image,row,col,newColor,rows,cols,ans,iniColor)
+	        
+	        
+		
+    		    
+		    
+
+
+#{ 
+ # Driver Code Starts
+import sys
+sys.setrecursionlimit(10**7)
+
+
+T=int(input())
+for i in range(T):
+	n, m = input().split()
+	n = int(n)
+	m = int(m)
+	image = []
+	for _ in range(n):
+		image.append(list(map(int, input().split())))
+	sr, sc, newColor = input().split()
+	sr = int(sr); sc = int(sc); newColor = int(newColor);
+	obj = Solution()
+	ans = obj.floodFill(image, sr, sc, newColor)
+	for _ in ans:
+		for __ in _:
+			print(__, end = " ")
+		print()
+# } Driver Code Ends

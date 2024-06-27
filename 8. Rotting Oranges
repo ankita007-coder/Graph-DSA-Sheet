@@ -1,0 +1,40 @@
+class Solution(object):
+    def orangesRotting(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        n = len(grid)
+        m = len(grid[0])
+        q = deque()
+        vis = [[0]*m for i in range(n)]
+        for i in range(n):
+            for j in range(m):
+                if grid[i][j]==2:
+                    q.append([i,j,0])
+                    vis[i][j]=1
+        rows = [-1,1,0,0]
+        cols = [0,0,-1,1]
+        maxi = 0
+        while len(q)>0:
+            index = q.popleft()
+            nrow = index[0]
+            ncol = index[1]
+            t = index[2]
+            maxi = max(maxi,t)
+            for i in range(4):
+                row = nrow+rows[i]
+                col = ncol+cols[i]
+                if row>=0 and row<n and col>=0 and col<m and grid[row][col]==1 and vis[row][col]!=1:
+                    grid[row][col]=2
+                    vis[row][col]=1
+                    q.append([row,col,t+1])
+        for i in range(n):
+            for j in range(m):
+                if grid[i][j]==1:
+                    return -1
+        return maxi
+            
+
+        
+                    

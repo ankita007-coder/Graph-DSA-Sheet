@@ -1,0 +1,38 @@
+import sys
+sys.setrecursionlimit(10**8)
+from collections import deque
+
+class Solution:
+    def numIslands(self, grid):
+        #code here
+        m = len(grid)
+        if m == 0:
+            return 0
+        n = len(grid[0])
+        vis = [[0] * n for _ in range(m)]
+        count = 0
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == 1 and vis[i][j] == 0:
+                    count += 1
+                    self.bfs(grid, i, j, vis)
+                    
+        return count
+
+    def bfs(self, grid, i, j, vis):
+        m = len(grid)
+        n = len(grid[0])
+        q = deque()
+        q.append([i, j])
+        vis[i][j] = 1 
+        
+        while len(q) > 0:
+            node = q.popleft()
+            for nrow in range(-1, 2):
+                for ncol in range(-1, 2):
+                    row = nrow + node[0]
+                    col = ncol + node[1]
+                    if 0 <= row < m and 0 <= col < n and grid[row][col] == 1 and vis[row][col] == 0:
+                        q.append([row, col])
+                        vis[row][col] = 1 
+

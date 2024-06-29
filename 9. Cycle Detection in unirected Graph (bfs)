@@ -1,0 +1,34 @@
+from typing import List
+from collections import deque
+class Solution:
+    #Function to detect cycle in an undirected graph.
+	def isCycle(self, V: int, adj: List[List[int]]) -> bool:
+		#Code here
+		vis = [False]*V
+		
+		for i in range(V):
+		    if not vis[i]:
+    		    if self.detectCycle(i,adj,vis,V):
+    		        return True
+		return False
+		    
+	def detectCycle(self,start,adj,vis,V):
+	    q = deque()
+	    vis[start]=True
+	    q.append([start,-1])
+	    
+	    while len(q)>0:
+	        pair = q.popleft()
+    	    node= pair[0]
+    	    parent = pair[1]
+    	    for i in adj[node]:
+    	        if not vis[i]:
+    	            vis[i]=True
+    	            q.append([i,node])
+    	        elif parent!=i:
+    	            return True
+        return False
+	        
+	    
+	    
+	    

@@ -1,0 +1,30 @@
+from collections import deque
+class Solution(object):
+    def updateMatrix(self, mat):
+        """
+        :type mat: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        n = len(mat)
+        m = len(mat[0])
+        vis = [[0]*m for i in range(n)]
+        dist = [[0]*m for i in range(n)]
+        q = deque()
+        for i in range(n):
+            for j in range(m):
+                if mat[i][j]==0:
+                    q.append([i,j,0])
+                    vis[i][j]=1
+        nrows = [1,-1,0,0]
+        ncols = [0,0,1,-1]
+        while len(q)>0:
+            row,col,count = q.popleft()
+            dist[row][col]=count
+            for i in range(4):      
+                r = row+nrows[i]
+                c = col+ncols[i]
+                if r>=0 and r<n and c>=0 and c<m and vis[r][c]==0 and mat[r][c]==1:
+                    q.append([r,c,count+1])
+                    vis[r][c]=1
+                        
+        return dist

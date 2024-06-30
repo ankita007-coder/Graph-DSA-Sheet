@@ -1,0 +1,41 @@
+#this question is similar to surrounding regions (the prev problem)
+
+class Solution(object):
+    def numEnclaves(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        n = len(grid)
+        m = len(grid[0])
+        vis = [[0]*m for i in range(n)]
+        drow = [0,0,1,-1]
+        dcol = [1,-1,0,0]
+        for i in range(m):
+            if grid[0][i]==1 and vis[0][i]==0:
+                self.dfs(0,i,grid,vis,drow,dcol)
+            if grid[n-1][i]==1 and vis[n-1][i]==0:
+                self.dfs(n-1,i,grid,vis,drow,dcol)
+
+        for i in range(n):
+            if grid[i][0]==1 and vis[i][0]==0:
+                self.dfs(i,0,grid,vis,drow,dcol)
+            if grid[i][m-1]==1 and vis[i][m-1]==0:
+                self.dfs(i,m-1,grid,vis,drow,dcol)
+        count=0
+        for i in range(n):
+            for j in range(m):
+                if grid[i][j]==1 and vis[i][j]==0:
+                    count+=1
+        return count
+
+    def dfs(self,row,col,grid,vis,drow,dcol):
+        vis[row][col]=1
+        n = len(grid)
+        m = len(grid[0])
+        for i in range(4):
+            r = drow[i]+row
+            c = dcol[i]+col
+            if 0<=r<n and 0<=c<m and grid[r][c]==1 and vis[r][c]==0:
+                self.dfs(r,c,grid,vis,drow,dcol)
+                

@@ -1,4 +1,4 @@
-```
+```markdown
 # Graph-DSA-Sheet
 
 Welcome to the **Graph Algorithms in Python** repository! This repository contains Python solutions for various important graph-related problems, including both classical and advanced algorithms.
@@ -20,7 +20,7 @@ Graphs are fundamental data structures in computer science used to represent pai
 To get started with the solutions in this repository, you can clone the repository using the following command:
 
 ```bash
-git clone https://github.com/yourusername/graph-algorithms-python.git
+git clone [https://github.com/yourusername/graph-algorithms-python.git](https://github.com/ankita007-coder/Graph-DSA-Sheet.git)
 ```
 
 Make sure you have Python installed on your system. You can run the scripts directly using Python 3.

@@ -62,7 +62,7 @@ Contributions are welcome! If you have any improvements, bug fixes, or new probl
 
 ## Contact
 
-If you have any questions, suggestions, or feedback, feel free to contact me at ankitabudhia0302@gmail.com](mailto:ankitabudhia0302@gmail.com).
+If you have any questions, suggestions, or feedback, feel free to contact me at [ankitabudhia0302@gmail.com](mailto:ankitabudhia0302@gmail.com).
 
 ---
 

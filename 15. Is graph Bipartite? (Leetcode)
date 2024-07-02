@@ -1,0 +1,53 @@
+#bfs solution
+class Solution(object):
+    def isBipartite(self, graph):
+        """
+        :type graph: List[List[int]]
+        :rtype: bool
+        """
+        n = len(graph)
+        vis = [-1]*n
+        q = deque()
+        for i in range(n):
+            if vis[i]==-1:
+                if self.bfs(vis,graph,i,q)==False:
+                    return False
+        return True
+            
+
+
+    def bfs(self,vis,graph,src,q):
+        q.append(src)
+        vis[src]=0
+        while len(q)>0:
+            node = q.popleft()
+            for i in graph[node]:
+                if vis[i]==-1:
+                    q.append(i)
+                    vis[i]=1-vis[node]
+                elif vis[i]==vis[node]:
+                    return False
+
+#dfs solution
+class Solution(object):
+    def isBipartite(self, graph):
+        """
+        :type graph: List[List[int]]
+        :rtype: bool
+        """
+        n = len(graph)
+        vis=[-1]*(n)
+        for i in range(n):
+            if vis[i]==-1:
+                if self.dfs(graph,vis,i,0)==False:
+                    return False
+        return True
+
+    def dfs(self,graph,vis,src,c):
+        vis[src]=c
+        for i in graph[src]:
+            if vis[i]==-1:
+                if self.dfs(graph,vis,i,1-c)==False:
+                    return False
+            elif vis[i]==vis[src]:
+                return False

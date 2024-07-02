@@ -67,4 +67,3 @@ If you have any questions, suggestions, or feedback, feel free to contact me at 
 ---
 
 Happy coding!
-```

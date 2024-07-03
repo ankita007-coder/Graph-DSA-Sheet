@@ -1,0 +1,35 @@
+#check for no cycle
+
+class Solution(object):
+    def findOrder(self, numCourses, prerequisites):
+        """
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: List[int]
+        """
+        vis = [0]*(numCourses)
+        graph = [[] for i in range(numCourses)]
+        for u,v in prerequisites:
+            graph[v].append(u)
+        #print(graph)
+        pathVis = [0]*(numCourses)
+        li = []
+        for i in range(numCourses):
+            if vis[i]!=1:
+                if not self.dfs(numCourses,vis,graph,pathVis,i,li):
+                    return []
+
+        #print(li)
+        return li[::-1]
+    def dfs(self,n,vis,adj,pathVis,src,li):
+        vis[src]=1
+        pathVis[src]=1
+        for i in adj[src]:
+            if vis[i]!=1:
+                if not self.dfs(n,vis,adj,pathVis,i,li):
+                    return False
+            elif pathVis[i]==1:
+                return False
+        pathVis[src]=0
+        li.append(src)
+        return True

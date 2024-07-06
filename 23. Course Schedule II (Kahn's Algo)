@@ -1,0 +1,35 @@
+class Solution(object):
+    def findOrder(self, numCourses, prerequisites):
+        """
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: List[int]
+        """
+
+        graph = [[] for i in range(numCourses)]
+        for u,v in prerequisites:
+            graph[v].append(u)
+        q=deque()
+        li=[]
+        indeg=[0]*numCourses
+
+        for i in range(numCourses):
+            for node in graph[i]:
+                indeg[node]+=1
+        
+        for i in range(numCourses):
+            if indeg[i]==0:
+                q.append(i)
+
+
+        while len(q)>0:
+            node=q.popleft()
+            li.append(node)
+            for i in graph[node]:
+                indeg[i]-=1
+                if indeg[i]==0:
+                    q.append(i)
+        #print(li)
+        if len(li)==numCourses:
+            return li
+        return []

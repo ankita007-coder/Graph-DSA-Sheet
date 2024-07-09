@@ -1,0 +1,49 @@
+from sortedcontainers import SortedSet
+class Solution:
+
+    #Function to find the shortest distance of all the vertices
+    #from the source vertex S.
+    def dijkstra(self, V, adj, S):
+        #code here
+        s = SortedSet()
+        d = [float('inf')]*V
+        s.add((S,0))
+        d[S]=0
+        while s:
+            nodes = s[0]
+            s.remove(nodes)
+            node = nodes[0]
+            dis = nodes[1]
+            for i,wt in adj[node]:
+                if dis+wt<d[i]:
+                    d[i]=dis+wt
+                    s.add((i,d[i]))
+        return d
+            
+        
+
+#{ 
+ # Driver Code Starts
+#Initial Template for Python 3
+import atexit
+import io
+import sys
+
+
+if __name__ == '__main__':
+    test_cases = int(input())
+    for cases in range(test_cases):
+        V,E = map(int,input().strip().split())
+        adj = [[] for i in range(V)]
+        for i in range(E):
+            u,v,w = map(int,input().strip().split())
+            adj[u].append([v,w])
+            adj[v].append([u,w])
+        S=int(input())
+        ob = Solution()
+        
+        res = ob.dijkstra(V,adj,S)
+        for i in res:
+            print(i,end=" ")
+        print()
+# } Driver Code Ends

@@ -1,0 +1,32 @@
+class Solution(object):
+    def ladderLength(self, beginWord, endWord, wordList):
+        """
+        :type beginWord: str
+        :type endWord: str
+        :type wordList: List[str]
+        :rtype: int
+        """
+        s = set()
+        for word in wordList:
+            s.add(word)
+        
+        q = deque()
+        q.append([beginWord,1])
+        if beginWord in s:
+            s.remove(beginWord)
+        while len(q)>0:
+            nodes = q.popleft()
+            word = nodes[0]
+            steps = nodes[1]
+
+            if word==endWord:
+                return steps
+            for i in range(len(word)):
+                for j in range(97,123):
+                    li = list(word)
+                    li[i] = chr(j)
+                    newWord = ''.join(li)
+                    if newWord in s:
+                        q.append([newWord,steps+1])
+                        s.remove(newWord)
+        return 0

@@ -1,0 +1,31 @@
+import heapq
+class Solution(object):
+    def findCheapestPrice(self, n, flights, src, dst, k):
+        """
+        :type n: int
+        :type flights: List[List[int]]
+        :type src: int
+        :type dst: int
+        :type k: int
+        :rtype: int
+        """
+        distance=[float('inf')]*n
+        adj =[[] for _ in range(n)]
+        q = []
+
+        for u,v,wt in flights:
+            adj[u].append((v,wt))
+        heapq.heappush(q,(0,src,0))
+        distance[src]=0
+        while q:
+            count,node,wt = heapq.heappop(q)
+
+            if count>k:
+                continue
+            for v,w in adj[node]:
+                if distance[v]>w+wt and count<=k:
+                    distance[v]=w+wt
+                    heapq.heappush(q,(count+1,v,distance[v]))
+        if distance[dst]==float('inf'):
+            return -1
+        return distance[dst]

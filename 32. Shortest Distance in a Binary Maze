@@ -1,0 +1,56 @@
+#User function Template for python3
+
+from typing import List
+from collections import deque
+class Solution:
+    
+    def shortestPath(self, grid: List[List[int]], source: List[int], destination: List[int]) -> int:
+        # code here
+        if source==destination:
+            return 0
+        q = deque()
+        n = len(grid)
+        m=len(grid[0])
+        d = [[float('inf')]*m for i in range(n)]
+        
+        d[source[0]][source[1]]=0
+        q.append((0,source[0],source[1]))
+        
+        drow= [1,-1,0,0]
+        dcol = [0,0,-1,1]
+        while q:
+            dis,i,j = q.popleft()
+            for k in range(4):
+                r = i+drow[k]
+                c = j+dcol[k]
+                
+                if 0<=r<n and 0<=c<m and grid[r][c]==1 and d[r][c]>dis+1:
+                    d[r][c] = dis+1
+                    if [r,c]==destination:
+                        return d[r][c]
+                    q.append((d[r][c],r,c))
+        return -1
+                
+            
+            
+        
+        
+
+#{ 
+ # Driver Code Starts
+#Initial Template for Python 3
+
+         
+if __name__=="__main__":
+    for _ in range(int(input())):
+        n,m=map(int,input().strip().split())
+        grid=[]
+        for i in range(n):
+            grid.append([int(i) for i in input().strip().split()])
+        source = [0] * 2
+        source[0], source[1] = map(int,input().strip().split())
+        destination = [0] * 2
+        destination[0], destination[1] = map(int,input().strip().split())
+        obj=Solution()
+        print(obj.shortestPath(grid, source, destination))
+# } Driver Code Ends

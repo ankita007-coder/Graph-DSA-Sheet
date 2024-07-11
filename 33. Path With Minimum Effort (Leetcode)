@@ -1,0 +1,33 @@
+import heapq
+class Solution(object):
+    def minimumEffortPath(self, heights):
+        """
+        :type heights: List[List[int]]
+        :rtype: int
+        """
+        n=len(heights)
+        m = len(heights[0])
+        d=[[float('inf')]*m for i in range(n)]
+
+        minheap = []
+        heapq.heappush(minheap,(0,0,0))
+        drow = [1,-1,0,0]
+        dcol = [0,0,1,-1]
+        while minheap:
+            dis,i,j = heapq.heappop(minheap)
+            if (i,j)==(n-1,m-1):
+                return dis
+            for k in range(4):
+                r = i+drow[k]
+                c = j+dcol[k]
+                
+                if 0<=r<n and 0<=c<m:
+                    effort = max(abs(heights[i][j]-heights[r][c]),dis)
+                    if  d[r][c]>effort:
+                        d[r][c]=effort
+                        heapq.heappush(minheap,(effort,r,c))
+        
+
+
+
+

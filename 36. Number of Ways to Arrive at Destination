@@ -1,0 +1,32 @@
+import heapq
+class Solution(object):
+    def countPaths(self, n, roads):
+        """
+        :type n: int
+        :type roads: List[List[int]]
+        :rtype: int
+        """
+        adj = [[] for _ in range(n)]
+        for u,v,wt in roads:
+            adj[u].append((v,wt))
+            adj[v].append((u,wt))
+        mod = 10**9+7
+        ways = [0]*n
+        dis = [float('inf')]*n
+        q = []
+        heapq.heappush(q,(0,0))
+        dis[0]=0
+        ways[0]=1
+        while q:
+            d,node= heapq.heappop(q)
+
+            for v,wt in adj[node]:
+                if d+wt<dis[v]:
+                    dis[v]= d+wt
+                    ways[v]=ways[node]
+                    heapq.heappush(q,(dis[v],v))
+                elif d+wt==dis[v]:
+                    ways[v]=(ways[v]+ways[node])%mod
+        # print(ways)
+        return ways[n-1]
+        

@@ -1,0 +1,51 @@
+class DisjointSet:
+    def __init__(self,V):
+        self.parent = [i for i in range(V)]
+        self.rank = [0]*V
+        
+    def find(self,X):
+        # Code here
+        
+        # print(X)
+        if self.parent[X]==X:
+            return X
+        self.parent[X]=self.find(self.parent[X])
+        return self.parent[X]
+    
+    # function shouldn't return or print anything
+    def unionSet(self, X, Z):
+        # Code here
+        ulp_x = self.find(X)
+        ulp_z = self.find(Z)
+        
+        if ulp_x==ulp_z:
+            return 
+        elif self.rank[ulp_x]<self.rank[ulp_z]:
+            self.parent[ulp_x]=ulp_z
+        elif self.rank[ulp_x]>self.rank[ulp_z]:
+            self.parent[ulp_z]=ulp_x
+        else:
+            self.parent[ulp_z]=ulp_x
+            self.rank[ulp_z]+=1
+
+class Solution(object):
+    def makeConnected(self, n, connections):
+        """
+        :type n: int
+        :type connections: List[List[int]]
+        :rtype: int
+        """
+        ds= DisjointSet(n)
+        edges,c=0,0
+        for u,v in connections:
+            if ds.find(u)==ds.find(v):
+                edges+=1
+            else:
+                ds.unionSet(u,v)
+        
+        for i in range(n):
+            if ds.parent[i]==i:
+                c+=1
+        if edges>=(c-1):
+            return c-1
+        return -1

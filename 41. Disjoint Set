@@ -1,0 +1,21 @@
+def find(A, X):
+    # Code here
+    if X<0 or len(A)<X:
+        return
+    # print(X)
+    if A[X-1]==X:
+        return X
+    A[X-1]=find(A,A[X-1])
+    return A[X-1]
+
+# function shouldn't return or print anything
+def unionSet(A, X, Z):
+    # Code here
+    ulp_x = find(A,X)
+    ulp_z = find(A,Z)
+    
+    if ulp_x==ulp_z:
+        return 
+    else:
+        A[ulp_x-1]=ulp_z
+    

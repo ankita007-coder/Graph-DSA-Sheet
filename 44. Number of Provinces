@@ -1,0 +1,65 @@
+#User function Template for python3
+class DisjointSet:
+    def __init__(self,V):
+        self.parent = [i for i in range(V)]
+        self.rank = [0]*V
+        
+    def find(self,X):
+        # Code here
+        
+        # print(X)
+        if self.parent[X]==X:
+            return X
+        self.parent[X]=self.find(self.parent[X])
+        return self.parent[X]
+    
+    # function shouldn't return or print anything
+    def unionSet(self, X, Z):
+        # Code here
+        ulp_x = self.find(X)
+        ulp_z = self.find(Z)
+        
+        if ulp_x==ulp_z:
+            return 
+        elif self.rank[ulp_x]<self.rank[ulp_z]:
+            self.parent[ulp_x]=ulp_z
+        elif self.rank[ulp_x]>self.rank[ulp_z]:
+            self.parent[ulp_z]=ulp_x
+        else:
+            self.parent[ulp_z]=ulp_x
+            self.rank[ulp_z]+=1
+
+class Solution:
+    def numProvinces(self, adj, V):
+        # code here 
+        ds = DisjointSet(V)
+        c=0
+        
+        for i in range(len(adj)):
+            for j in range(len(adj[0])):
+                if adj[i][j]==1:
+                    ds.unionSet(i,j)
+        
+        for i in range(V):
+            if ds.parent[i]==i:
+                c+=1
+        return c
+
+
+#{ 
+ # Driver Code Starts
+#Initial Template for Python 3
+
+if __name__ == '__main__': 
+    t = int (input ())
+    for _ in range (t):
+        V=int(input())
+        adj=[]
+        
+        for i in range(V):
+            temp = list(map(int,input().split()))
+            adj.append(temp);
+        
+        ob = Solution()
+        print(ob.numProvinces(adj,V))
+# } Driver Code Ends

@@ -1,0 +1,72 @@
+#User function Template for python3
+class DisjointSet:
+    def __init__(self,V):
+        self.parent = [i for i in range(V)]
+        self.rank = [0]*V
+        
+    def find(self,X):
+        # Code here
+        
+        # print(X)
+        if self.parent[X]==X:
+            return X
+        self.parent[X]=self.find(self.parent[X])
+        return self.parent[X]
+    
+    # function shouldn't return or print anything
+    def unionSet(self, X, Z):
+        # Code here
+        ulp_x = self.find(X)
+        ulp_z = self.find(Z)
+        
+        if ulp_x==ulp_z:
+            return 
+        elif self.rank[ulp_x]<self.rank[ulp_z]:
+            self.parent[ulp_x]=ulp_z
+        elif self.rank[ulp_x]>self.rank[ulp_z]:
+            self.parent[ulp_z]=ulp_x
+        else:
+            self.parent[ulp_z]=ulp_x
+            self.rank[ulp_z]+=1
+    
+class Solution:
+        #Function to find sum of weights of edges of the Minimum Spanning Tree.
+    def spanningTree(self, V, adj):
+        #code here
+        edges = []
+        s=0
+        for i in range(len(adj)):
+            for v,w in adj[i]:
+                edges.append((w,i,v))
+        edges = sorted(edges,key=lambda x:x[0])
+        ds = DisjointSet(V)
+        # print(edges)
+        for wt,u,v in edges:
+            if(ds.find(u)!=ds.find(v)):
+                s+=wt
+                ds.unionSet(u,v)
+                
+        return s
+
+#{ 
+ # Driver Code Starts
+#Initial Template for Python 3
+import atexit
+import io
+import sys
+
+# Contributed by : Nagendra Jha
+
+if __name__ == '__main__':
+    test_cases = int(input())
+    for cases in range(test_cases):
+        V,E = map(int,input().strip().split())
+        adj = [[] for i in range(V)]
+        for i in range(E):
+            u,v,w = map(int,input().strip().split())
+            adj[u].append([v,w])
+            adj[v].append([u,w])
+        ob = Solution()
+        
+        print(ob.spanningTree(V,adj))
+# } Driver Code Ends

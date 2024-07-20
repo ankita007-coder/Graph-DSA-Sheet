@@ -1,0 +1,66 @@
+class DisjointSet:
+    def __init__(self,V):
+        self.parent = [i for i in range(V)]
+        self.rank = [0]*V
+        
+    def find(self,X):
+        # Code here
+        
+        # print(X)
+        if self.parent[X]==X:
+            return X
+        self.parent[X]=self.find(self.parent[X])
+        return self.parent[X]
+    
+    # function shouldn't return or print anything
+    def unionSet(self, X, Z):
+        # Code here
+        ulp_x = self.find(X)
+        ulp_z = self.find(Z)
+        
+        if ulp_x==ulp_z:
+            return 
+        elif self.rank[ulp_x]<self.rank[ulp_z]:
+            self.parent[ulp_x]=ulp_z
+        elif self.rank[ulp_x]>self.rank[ulp_z]:
+            self.parent[ulp_z]=ulp_x
+        else:
+            self.parent[ulp_z]=ulp_x
+            self.rank[ulp_z]+=1
+class Solution(object):
+    def accountsMerge(self, accounts):
+        """
+        :type accounts: List[List[str]]
+        :rtype: List[List[str]]
+        """
+        n = len(accounts)
+        str_dic = {}
+        ds = DisjointSet(n)
+        for i in range(n):
+            for j in range(1,len(accounts[i])):
+                word = accounts[i][j]
+                if word not in str_dic:
+                    str_dic[word]=i
+                else:
+                    ds.unionSet(i,str_dic[word])
+        
+        merge_arr = [[] for _ in range(n)]
+
+        for mail in str_dic:
+            idx = str_dic[mail]
+            index = ds.find(idx)            
+            merge_arr[index].append(mail)
+        res = []
+        for i in range(n):
+            if len(merge_arr[i])==0:
+                continue
+            arr = sorted(merge_arr[i])
+            temp = [accounts[i][0]]
+            for mail in arr:
+                temp.append(mail)
+            res.append(temp)
+            
+        return res
+         
+
+        

@@ -1,0 +1,91 @@
+
+class DisjointSet:
+    def __init__(self, V):
+        self.parent = [i for i in range(V)]
+        self.rank = [0] * V
+        self.size = [1] * V  # Initialize size with 1 for each node
+
+    def find(self, X):
+        # Path compression
+        if self.parent[X] == X:
+            return X
+        self.parent[X] = self.find(self.parent[X])
+        return self.parent[X]
+
+    def unionSet(self, X, Z):
+        ulp_x = self.find(X)
+        ulp_z = self.find(Z)
+
+        if ulp_x == ulp_z:
+            return
+        elif self.rank[ulp_x] < self.rank[ulp_z]:
+            self.parent[ulp_x] = ulp_z
+        elif self.rank[ulp_x] > self.rank[ulp_z]:
+            self.parent[ulp_z] = ulp_x
+        else:
+            self.parent[ulp_z] = ulp_x
+            self.rank[ulp_x] += 1  # Fix the increment of rank
+
+    def unionBySize(self, X, Z):
+        up_x = self.find(X)
+        up_z = self.find(Z)
+
+        if up_x == up_z:
+            return
+        elif self.size[up_z] > self.size[up_x]:
+            self.parent[up_x] = up_z
+            self.size[up_z] += self.size[up_x]  # Correctly update the size
+        else:
+            self.parent[up_z] = up_x
+            self.size[up_x] += self.size[up_z]  # Correctly update the size
+
+
+class Solution(object):
+    def largestIsland(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        n = len(grid)
+        m = len(grid[0])
+        drow = [0, 0, -1, 1]
+        dcol = [-1, 1, 0, 0]
+        ds = DisjointSet(m * n)
+
+        # First, get the size of connected components
+        for i in range(n):
+            for j in range(m):
+                if grid[i][j] == 0:
+                    continue
+                for k in range(4):
+                    r = drow[k] + i
+                    c = dcol[k] + j
+                    if 0 <= r < n and 0 <= c < m and grid[r][c] == 1:
+                        curr = i * m + j
+                        adj = r * m + c
+                        ds.unionBySize(curr, adj)
+
+        maxi = 0
+        # Now, we need to try making the largest island
+        for i in range(n):
+            for j in range(m):
+                if grid[i][j] == 0:
+                    s = set()
+                    for k in range(4):
+                        r = drow[k] + i
+                        c = dcol[k] + j
+                        if 0 <= r < n and 0 <= c < m and grid[r][c] == 1:
+                            parent = ds.find(r * m + c)
+                            s.add(parent)
+                    total_size = 1  # Start with 1 for the current 0 turned into 1
+                    for parent in s:
+                        total_size += ds.size[parent]  # Sum sizes of unique connected components
+                    maxi = max(maxi, total_size)
+
+        # Check the largest island in the original grid without converting any 0
+        for i in range(n * m):
+            if grid[i // m][i % m] == 1:  # Only consider original islands
+                maxi = max(maxi, ds.size[ds.find(i)])
+
+        return maxi
+

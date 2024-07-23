@@ -1,0 +1,116 @@
+#User function Template for python3
+
+from typing import List
+class DisjointSet:
+    def __init__(self,V):
+        self.parent = [i for i in range(V)]
+        self.rank = [0]*V
+        
+    def find(self,X):
+        # Code here
+        
+        # print(X)
+        if self.parent[X]==X:
+            return X
+        self.parent[X]=self.find(self.parent[X])
+        return self.parent[X]
+    
+    # function shouldn't return or print anything
+    def unionSet(self, X, Z):
+        # Code here
+        ulp_x = self.find(X)
+        ulp_z = self.find(Z)
+        
+        if ulp_x==ulp_z:
+            return 
+        elif self.rank[ulp_x]<self.rank[ulp_z]:
+            self.parent[ulp_x]=ulp_z
+        elif self.rank[ulp_x]>self.rank[ulp_z]:
+            self.parent[ulp_z]=ulp_x
+        else:
+            self.parent[ulp_z]=ulp_x
+            self.rank[ulp_z]+=1
+
+class Solution:
+    def numOfIslands(self, n: int, m : int, operators : List[List[int]]) -> List[int]:
+        # code here
+        vis = [[0 for i in range(m)] for _ in range(n)]
+        
+        ds = DisjointSet(n*m)
+        count = 0
+        ans=[]
+        drow = [-1,1,0,0]
+        dcol = [0,0,-1,1]
+        for i,j in operators:
+            if vis[i][j]==1:
+                ans.append(count)
+                continue
+            vis[i][j]=1
+            count+=1
+            node = (i*m)+j
+            for d in range(4):
+                r = drow[d]+i
+                c = dcol[d]+j
+                if 0<=r<n and 0<=c<m and vis[r][c]==1:
+                    
+                    adjNode = (r*m)+c
+                    if ds.find(node)!=ds.find(adjNode):
+                        count-=1
+                        ds.unionSet(node,adjNode)
+                
+            ans.append(count)
+        return ans
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+#{ 
+ # Driver Code Starts
+#Initial Template for Python 3
+
+
+    
+if __name__=="__main__":
+    T = int(input())
+    for t in range(T):
+        
+        n = int(input())
+        m = int(input())
+        k = int(input())
+        operators = []
+        for i in range(k):
+            u, v = map(int, input().strip().split())
+            operators.append([u, v])
+        obj = Solution()
+        ans = obj.numOfIslands(n, m, operators)
+        for i in ans:
+            print(i, end = ' ')
+        print()
+            
+
+# } Driver Code Ends

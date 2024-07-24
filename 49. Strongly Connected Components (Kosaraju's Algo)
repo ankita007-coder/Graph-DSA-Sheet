@@ -1,0 +1,66 @@
+#User function Template for python3
+
+class Solution:
+    def _dfs(self,i,vis,adj,st):
+        vis[i]=1
+        for node in adj[i]:
+            if not vis[node]:
+                self._dfs(node,vis,adj,st)
+        st.append(i)
+    
+    def _reverseDfs(self,node,vis,adjReverse):
+        vis[node]=1
+        for i in adjReverse[node]:
+            if not vis[i]:
+                self._reverseDfs(i,vis,adjReverse)
+    #Function to find number of strongly connected components in the graph.
+    def kosaraju(self, V, adj):
+        # code here
+        vis=[0]*V
+        st = []
+        #adding the values to stack
+        for i in range(V):
+            if not vis[i]:
+                self._dfs(i,vis,adj,st)
+        
+        adjReverse = [[] for i in range(V)]
+        #creating reverse connections
+        for i in range(V):
+            for node in adj[i]:
+                adjReverse[node].append(i)
+        vis = [0]*V
+        # print(st)
+        compCnt=0
+        
+        #counting the number of scc 
+        #in this since we already have the nodes we just need to count the number of comp
+        
+        while st:
+            node = st.pop()
+            
+            if not vis[node]:
+                compCnt+=1
+                self._reverseDfs(node,vis,adjReverse)
+        return compCnt
+            
+
+#{ 
+ # Driver Code Starts
+#Initial Template for Python 3
+
+from collections import OrderedDict 
+import sys 
+
+sys.setrecursionlimit(10**6) 
+if __name__ == '__main__':
+    t = int(input())
+    for i in range(t):
+        V,E = list(map(int, input().strip().split()))
+        adj = [[] for i in range(V)]
+        for i in range(E):
+            a,b = map(int,input().strip().split())
+            adj[a].append(b)
+        ob = Solution()
+        
+        print(ob.kosaraju(V, adj))
+# } Driver Code Ends

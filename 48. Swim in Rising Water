@@ -1,0 +1,28 @@
+import heapq
+class Solution(object):
+    def swimInWater(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        n = len(grid)
+        d = [[float('inf') for _ in range(n)] for i in range(n)]
+        d[0][0]=grid[0][0]
+
+        q =[]
+        heapq.heappush(q,(grid[0][0],0,0))
+        drow = [0,0,-1,1]
+        dcol = [-1,1,0,0]
+        while q:
+            dis,i,j = heapq.heappop(q)
+            for k in range(4):
+                row = drow[k]+i
+                col = dcol[k]+j
+                if 0<=row<n and 0<=col<n:
+                    maxi = max(dis,grid[row][col])
+                    if maxi<d[row][col]:
+                        d[row][col]=maxi
+                        heapq.heappush(q,(maxi,row,col))
+        return d[n-1][n-1]
+
+        

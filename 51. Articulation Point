@@ -1,0 +1,64 @@
+#User function Template for python3
+
+import sys
+sys.setrecursionlimit(10**6)
+
+class Solution:
+    def __init__(self):
+        self._timer=1
+    
+    def dfs(self,node,parent,vis,mark,adj,tin,low):
+        vis[node]=1
+        low[node]=tin[node]=self._timer
+        self._timer+=1
+        childCnt=0
+        for child in adj[node]:
+            if child == parent: continue
+            if vis[child]==0:
+                self.dfs(child,node,vis,mark,adj,tin,low)
+                low[node] = min(low[node],low[child])
+                if low[child]>=tin[node] and parent!=-1:
+                    mark[node]=1
+                childCnt+=1
+            else:
+                low[node]=min(tin[child],low[node])
+        if childCnt>1 and parent==-1:
+            mark[node]=1
+    
+    #Function to return Breadth First Traversal of given graph.
+    def articulationPoints(self, V, adj):
+        # code here
+        mark = [0]*V
+        low = [0]*V
+        tin = [0]*V
+        vis = [0]*V
+        for i in range(V):
+            if vis[i]==0:
+                self.dfs(i,-1,vis,mark,adj,tin,low)
+        #print(adj)
+        ans=[]      
+        for i in range(V):
+            if mark[i]==1:
+                ans.append(i)
+        if len(ans)==0:
+            return [-1]
+        return ans
+#{ 
+ # Driver Code Starts
+if __name__ == '__main__':
+	T=int(input())
+	for i in range(T):
+		V, E = map(int, input().split())
+		adj = [[] for i in range(V)]
+		for _ in range(E):
+			u, v = map(int, input().split())
+			adj[u].append(v)
+			adj[v].append(u)
+		ob = Solution()
+		ans = ob.articulationPoints(V, adj)
+		for i in range(len(ans)):
+		    print(ans[i], end = " ")
+		print()
+        
+
+# } Driver Code Ends
